@@ -19,7 +19,7 @@ public class Graph {
 	private int numEdges; // total number of edges
 	private Edge[] adjacencyList; // adjacency list; for each vertex stores a linked list of edges
     // Your HashTable that maps city names to node ids should probably be here as well
-
+	private  HashTable table;
 	/**
 	 * Read graph info from the given file, and create nodes and edges of
 	 * the graph.
@@ -28,6 +28,41 @@ public class Graph {
 	 */
 	public void loadGraph(String filename) {
 		// FILL IN CODE
+		numNodes = 0;
+		numEdges = 0;
+		try(BufferedReader reader = new BufferedReader(new FileReader(filename))){
+			String line = reader.readLine();
+			line = reader.readLine();
+			int size = Integer.parseInt(line);
+			nodes = new CityNode[size];
+			adjacencyList = new Edge[size];
+			table = new HashTable(size);
+			while(!line.equals("ARCS")){
+				String[] ss = line.split(" ");
+				String name = ss[0];
+				Double x = Double.parseDouble(ss[1]);
+				Double y = Double.parseDouble(ss[2]);
+				CityNode cn = new CityNode(name, x, y);
+				addNode(cn);
+				line = reader.readLine();
+			}
+			line = reader.readLine();
+			while(line != null){
+				String[] ss = line.split(" ");
+				int id1 = table.getId(ss[0]);
+				int id2 = table.getId(ss[1]);
+				int cost = Integer.parseInt(ss[2]);
+				Edge edge1 = new Edge(id2, cost, null);
+				Edge edge2 = new Edge(id1, cost, null);
+				addEdge(id1, edge1);
+				addEdge(id2, edge2);
+				line = reader.readLine();
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 	}
 
@@ -40,6 +75,12 @@ public class Graph {
 	 */
 	public void addNode(CityNode node) {
 		// FILL IN CODE
+		nodes[numNodes] = node;
+		String city = node.getCity();
+		int id = numNodes;
+		HashNode hn = new HashNode(id, city, null);
+		table.insert(hn);
+		numNodes++;
 	}
 
 	/**
@@ -59,6 +100,10 @@ public class Graph {
 	 */
 	public void addEdge(int nodeId, Edge edge) {
 		// FILL IN CODE
+		Edge head = adjacencyList[nodeId];
+		edge.setNext(head);
+		head = edge;
+		numEdges++;
 	}
 
 	/**
@@ -67,8 +112,9 @@ public class Graph {
 	 * @return its integer id
 	 */
 	public int getId(CityNode city) {
-
-        return -1; // Don't forget to change this
+		String name = city.getCity();
+		int id = table.getId(name);
+        return id; // Don't forget to change this
     }
 
 	/**
@@ -84,6 +130,18 @@ public class Graph {
 		int i = 0;
 		Point[][] edges2D = new Point[numEdges][2];
 		// FILL IN CODE
+		for(int j = 0; j < numNodes; j++){
+			Point src = nodes[j].getLocation();
+			Edge edge = adjacencyList[j];
+			while(edge != null){
+				int id = edge.getNeighbor();
+				Point dest = nodes[id].getLocation();
+				edges2D[i][0] = src;
+				edges2D[i][1] = dest;
+				i++;
+				edge = edge.getNext();
+			}
+		}
 
 		return edges2D;
 	}
