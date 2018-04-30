@@ -5,13 +5,26 @@ package graph;
  *  PriorityQueue yourself. You may use/modify the MinHeap code posted
  *  by the instructor under Examples, as long as you understand it. */
 public class PriorityQueue {
+	Priority[] minPri;
+	int count;
+	int[] map;
+
+	public PriorityQueue(int size){
+		minPri = new Priority[size + 1];
+		minPri[0] = new Priority(-1, Integer.MIN_VALUE);
+		count = 1;
+		map = new int[size];
+	}
 
 	/** Insert a new element (nodeId, priority) into the heap.
      *  For this project, the priority is the current "distance"
      *  for this nodeId in Dikstra's algorithm. */
 	public void insert(int nodeId, int priority) {
 		// FILL IN CODE
-
+		int index = count;
+		map[nodeId] = index;
+		minPri[index] = new Priority(nodeId, priority);
+		count++;
 	}
 
     /**
@@ -21,7 +34,9 @@ public class PriorityQueue {
      */
 	public int removeMin() {
 		// FILL IN CODE
-
+		int id = minPri[1].getId();
+		swap(1, count - 1);
+		count--;
 		return -1; // don't forget to change it
 	}
 
@@ -32,7 +47,33 @@ public class PriorityQueue {
      * @param newPriority new value of priority
      */
 	public void reduceKey(int nodeId, int newPriority) {
+		int index = map[nodeId];
+		minPri[index].setPriority(newPriority);
+		pushUp(index);
+	}
 
+	public void pushUp(int index){
+		int child = index;
+		int father = child / 2;
+		while(minPri[child].getPriority() < minPri[father].getPriority()){
+			swap(child, father);
+			child = father;
+			father = child / 2;
+		}
+	}
+
+	public void swap(int i, int j){
+		Priority pi = minPri[i];
+		Priority pj = minPri[j];
+
+		int idi = pi.getId();
+		int idj = pj.getId();
+
+		map[idi] = j;
+		map[idj] = i;
+
+		minPri[i] = pj;
+		minPri[j] = pi;
 	}
 
 }
