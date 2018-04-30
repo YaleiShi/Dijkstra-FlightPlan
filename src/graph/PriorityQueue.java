@@ -37,7 +37,8 @@ public class PriorityQueue {
 		int id = minPri[1].getId();
 		swap(1, count - 1);
 		count--;
-		return -1; // don't forget to change it
+		pushDown(1);
+		return id; // don't forget to change it
 	}
 
     /**
@@ -62,6 +63,25 @@ public class PriorityQueue {
 		}
 	}
 
+	public void pushDown(int index){
+		System.out.println("count is " + count);
+		int father = index;
+		while(!isLeaf(father)){
+			int smallestChild = father * 2;
+			System.out.println("father is " + father + " child is " + smallestChild);
+			if(smallestChild + 1 < count && minPri[smallestChild].getPriority() > minPri[smallestChild + 1].getPriority()){
+				smallestChild = smallestChild + 1;
+			}
+			System.out.println("father is " + father + " child is " + smallestChild);
+			if(minPri[father].getPriority() < minPri[smallestChild].getPriority()){
+				return;
+			}
+			swap(father, smallestChild);
+			father = smallestChild;
+		}
+
+	}
+
 	public void swap(int i, int j){
 		Priority pi = minPri[i];
 		Priority pj = minPri[j];
@@ -74,6 +94,20 @@ public class PriorityQueue {
 
 		minPri[i] = pj;
 		minPri[j] = pi;
+	}
+
+	public boolean isLeaf(int index){
+		return index > ((count - 1) / 2) && index < count;
+	}
+
+	public boolean isEmpty(){
+		return count == 2;
+	}
+
+	public void print(){
+		for(Priority p: minPri){
+			System.out.print(p.getId() + "|" + p.getPriority() + ", ");
+		}
 	}
 
 }
