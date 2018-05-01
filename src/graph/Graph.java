@@ -37,6 +37,7 @@ public class Graph {
 			nodes = new CityNode[size];
 			adjacencyList = new Edge[size];
 			table = new HashTable(size);
+			line = reader.readLine();
 			while(!line.equals("ARCS")){
 				String[] ss = line.split(" ");
 				String name = ss[0];
@@ -79,6 +80,7 @@ public class Graph {
 		String city = node.getCity();
 		int id = numNodes;
 		HashNode hn = new HashNode(id, city, null);
+//		System.out.println("id: " + id + " city: " + city + " is added");
 		table.insert(hn);
 		numNodes++;
 	}
@@ -100,9 +102,11 @@ public class Graph {
 	 */
 	public void addEdge(int nodeId, Edge edge) {
 		// FILL IN CODE
+//		System.out.println(adjacencyList.length);
+//		System.out.println(nodeId);
 		Edge head = adjacencyList[nodeId];
 		edge.setNext(head);
-		head = edge;
+		adjacencyList[nodeId] = edge;
 		numEdges++;
 	}
 
@@ -116,6 +120,10 @@ public class Graph {
 		int id = table.getId(name);
         return id; // Don't forget to change this
     }
+
+	public Edge[] getAdjacencyList() {
+		return adjacencyList;
+	}
 
 	/**
 	 * Return the edges of the graph as a 2D array of points.
@@ -142,7 +150,6 @@ public class Graph {
 				edge = edge.getNext();
 			}
 		}
-
 		return edges2D;
 	}
 
@@ -158,6 +165,9 @@ public class Graph {
         }
 		Point[] pnodes = new Point[this.nodes.length];
 		// FILL IN CODE
+		for(int i = 0; i < numNodes; i++){
+			pnodes[i] = nodes[i].getLocation();
+		}
 
 		return pnodes;
 	}
@@ -174,7 +184,9 @@ public class Graph {
         }
 		String[] labels = new String[nodes.length];
 		// FILL IN CODE
-
+		for(int i = 0; i < numNodes; i++){
+			labels[i] = nodes[i].getCity();
+		}
 
 		return labels;
 
@@ -190,7 +202,10 @@ public class Graph {
 		Point[][] edges2D = new Point[pathOfNodes.size()-1][2];
         // Each "edge" is an array of size two (one Point is origin, one Point is destination)
         // FILL IN CODE
-
+		for(i = 0; i < pathOfNodes.size() - 1; i++){
+			edges2D[i][0] = nodes[pathOfNodes.get(i)].getLocation();
+			edges2D[i][1] = nodes[pathOfNodes.get(i + 1)].getLocation();
+		}
         return edges2D;
 	}
 

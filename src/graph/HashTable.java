@@ -16,12 +16,8 @@ public class HashTable {
     public void insert(HashNode node){
         int index = hash(node.getCity());
         HashNode head = nodes[index];
-        if(head == null){
-            head = node;
-            return;
-        }
         node.setNext(head);
-        head = node;
+        nodes[index] = node;
     }
 
     public int getId(String s){
@@ -38,14 +34,14 @@ public class HashTable {
 
     public int hash(String s) {
         int i;
-        int r = 0;
+        long r = 0;
         char c;
         for (i = 0; i < s.length(); i++)
         {
             c = s.charAt(i);
             r = (int) c + A*r;
         }
-        return r % size;
+        return (int) (r % size);
     }
 
 }

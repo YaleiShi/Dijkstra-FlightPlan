@@ -64,15 +64,12 @@ public class PriorityQueue {
 	}
 
 	public void pushDown(int index){
-		System.out.println("count is " + count);
 		int father = index;
 		while(!isLeaf(father)){
 			int smallestChild = father * 2;
-			System.out.println("father is " + father + " child is " + smallestChild);
 			if(smallestChild + 1 < count && minPri[smallestChild].getPriority() > minPri[smallestChild + 1].getPriority()){
 				smallestChild = smallestChild + 1;
 			}
-			System.out.println("father is " + father + " child is " + smallestChild);
 			if(minPri[father].getPriority() < minPri[smallestChild].getPriority()){
 				return;
 			}
