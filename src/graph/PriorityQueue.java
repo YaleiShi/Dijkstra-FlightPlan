@@ -53,6 +53,11 @@ public class PriorityQueue {
 		pushUp(index);
 	}
 
+	/**
+	 * push the element in the index position up to the right place
+	 * finally build a min heap
+	 * @param index the position of the element
+	 */
 	public void pushUp(int index){
 		int child = index;
 		int father = child / 2;
@@ -63,6 +68,11 @@ public class PriorityQueue {
 		}
 	}
 
+	/**
+	 * push down the elment to the right place
+	 * if one of the children is smaller than the parent, swap them and keep going
+	 * @param index the position of the element
+	 */
 	public void pushDown(int index){
 		int father = index;
 		while(!isLeaf(father)){
@@ -79,6 +89,12 @@ public class PriorityQueue {
 
 	}
 
+	/**
+	 * swap the position of the two element and change the
+	 * record in the position array
+	 * @param i the first element position
+	 * @param j the second element position
+	 */
 	public void swap(int i, int j){
 		Priority pi = minPri[i];
 		Priority pj = minPri[j];
@@ -93,14 +109,26 @@ public class PriorityQueue {
 		minPri[j] = pi;
 	}
 
+	/**
+	 * return true if the the element in the position is a leaf
+	 * @param index the position of the element
+	 * @return true if is a leaf, false if not
+	 */
 	public boolean isLeaf(int index){
 		return index > ((count - 1) / 2) && index < count;
 	}
 
+	/**
+	 * return true if the number of element is only 2
+	 * @return true or false
+	 */
 	public boolean isEmpty(){
 		return count == 2;
 	}
 
+	/**
+	 * print out the priority queue
+	 */
 	public void print(){
 		for(Priority p: minPri){
 			System.out.print(p.getId() + "|" + p.getPriority() + ", ");

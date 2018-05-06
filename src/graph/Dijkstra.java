@@ -51,47 +51,33 @@ public class Dijkstra {
         // Run Dijkstra
         pq.reduceKey(oriId, 0);
         cost[oriId] = 0;
-//        System.out.println("oriId is " + oriId);
-//        System.out.println("destId is " + destId);
         while(!pq.isEmpty()){
             int min = pq.removeMin();
             known[min] = true;
             int dist = cost[min];
-//            System.out.println("----------------------------------------");
-//            System.out.println("min is " + min + " cost is " + cost[min]);
 
             Edge e = edges[min];
             while(e != null){
-//                System.out.println("the edge " + e.getNeighbor() + " is " + known[e.getNeighbor()]);
                 if(!known[e.getNeighbor()] && dist + e.getCost() < cost[e.getNeighbor()]){
-//                    System.out.println("the cost now is " + cost[e.getNeighbor()] + " the dist is " + (dist + e.getCost()));
                     cost[e.getNeighbor()] = dist + e.getCost();
                     parent[e.getNeighbor()] = min;
                     pq.reduceKey(e.getNeighbor(), dist + e.getCost());
                 }
                 e = e.getNext();
             }
-//            System.out.println("*********Priority Queue***********");
-//            pq.print();
-//            System.out.println("*****************");
         }
 
-//        System.out.println("****************table****************");
-//        System.out.println("id " + " cost " + " parent " + " known");
-//        for(int i = 0; i < size; i++){
-//            System.out.println(i + "  " + cost[i] + "  " + parent[i] + "  " + known[i]);
-//        }
+
         // Compute the nodes on the shortest path by "backtracking" using the table
         ArrayList<Integer> array = new ArrayList<Integer>();
         array.add(destId);
-//        System.out.print("the shortest path from " + oriId + "to " + destId + "is: " + destId);
+
         int father = parent[destId];
         while(father != -1){
-            System.out.print(" " + father);
             array.add(father);
             father = parent[father];
         }
-//        System.out.println();
+
         // The result should be in an instance variable called "shortestPath" and
         // should also be returned by the method
         Collections.reverse(array);

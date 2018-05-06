@@ -16,6 +16,10 @@ class Edge {
         this.next = next;
     }
 
+    /**
+     * The getters and setters
+     * @return
+     */
     public int getNeighbor() {
         return neighbor;
     }

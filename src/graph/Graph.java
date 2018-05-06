@@ -80,7 +80,6 @@ public class Graph {
 		String city = node.getCity();
 		int id = numNodes;
 		HashNode hn = new HashNode(id, city, null);
-//		System.out.println("id: " + id + " city: " + city + " is added");
 		table.insert(hn);
 		numNodes++;
 	}
@@ -102,8 +101,6 @@ public class Graph {
 	 */
 	public void addEdge(int nodeId, Edge edge) {
 		// FILL IN CODE
-//		System.out.println(adjacencyList.length);
-//		System.out.println(nodeId);
 		Edge head = adjacencyList[nodeId];
 		edge.setNext(head);
 		adjacencyList[nodeId] = edge;
@@ -121,6 +118,10 @@ public class Graph {
         return id; // Don't forget to change this
     }
 
+	/**
+	 *
+	 * @return the pointer to adjacency list
+	 */
 	public Edge[] getAdjacencyList() {
 		return adjacencyList;
 	}
